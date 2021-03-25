@@ -36,19 +36,3 @@ public void draw() {
   calendar.show();
   calendar.setTileSize();
 }
-
-
-// ----------------------------------------------------------------------------------------------------------------
-//  showTileArr - paints the tiles on the screen
-// ----------------------------------------------------------------------------------------------------------------
-public void showTileArr(){
-  // println("------------------------------------------------");
-  for (int y = 0; y < TILE_ARR_HEIGHT; ++y){
-    for (int x = 0; x < TILE_ARR_LENGTH; ++x){
-      // print("X: " + x + " " + "Y: " + y +" ");
-      tileArr[y][x].show();
-      // print("Tile Number: " + tileArr[y][x].getTileNumber());
-    }
-    // println("");
-  }
-}
