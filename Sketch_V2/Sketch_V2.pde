@@ -6,7 +6,6 @@ import java.time.*;
 // 
 // ----------------------------------------------------------------------------------------------------------------
 
-public Calendar calendar;
 // Dimensions
 public final int TILE_ARR_LENGTH = 7;
 public final int TILE_ARR_HEIGHT = 6;
@@ -14,9 +13,7 @@ public float TILE_SIZE_X;
 public float TILE_SIZE_Y;
 
 
-// parts of calendar
-public Header header;
-public Tile[][] tileArr = new Tile[TILE_ARR_HEIGHT][TILE_ARR_LENGTH];
+public Calendar calendar;
 
 // date data
 public LocalDate localDate;
@@ -46,6 +43,9 @@ public void setup() {
 public void draw() {
   showTileArr();
   header.show();
+
+
+  calendar.show();
   calendar.setTileSize();
 }
 
