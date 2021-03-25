@@ -2,28 +2,46 @@ import java.time.*;
 
 public class Tile {
 
-  private final PFont FONT = createFont("Georgia", 64);
-  private final int DATE_FONT_SIZE = 25;
-  private final int TILE_STROKE_WEIGHT = 5;
+    private DayOfWeek dayOfWeek;
+    private int date;
 
-  private DayOfWeek dayOfWeek;
-  private int date;
+    private int arrX;
+    private int arrY;
+    private int tileNumber;
 
-  private int x;
-  private int y;
-  private int tileNumber;
+    public Tile (int x, int y, DayOfWeek dayOfWeek) {
+        // x y position in array
+        arrX = x;
+        arrY = y;
 
-  public Tile (int x, int y, DayOfWeek dayOfWeek) {
-    // x y position in array
-    this.x = x;
-    this.y = y;
-
-    // date
-    this.dayOfWeek = dayOfWeek;
+        // date
+        this.dayOfWeek = dayOfWeek;
 
 
-    setTileNumber();
-    setDate();
-  }
+        setTileNumber();
+        setDate();
+    }
+
+    private void setTileNumber() {
+        this.tileNumber = getX() + getY()*7; 
+    }
+
+    private void setDate() {
+        this.date = getTileNumber() - firstDayOfMonth + 1;
+    }
+
+
+
+    public int getTileNumber() {
+        return this.tileNumber;
+    }
+
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
 
 }// Tile

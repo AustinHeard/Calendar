@@ -6,24 +6,12 @@ import java.time.*;
 // 
 // ----------------------------------------------------------------------------------------------------------------
 
-// Dimensions
-public final int TILE_ARR_LENGTH = 7;
-public final int TILE_ARR_HEIGHT = 6;
-public float TILE_SIZE_X;
-public float TILE_SIZE_Y;
-
 
 public Calendar calendar;
 
-// date data
-public LocalDate localDate;
+// Month of The Calendar
 public Month month = Month.APRIL;
-public DayOfWeek dayOfWeek;
-public int firstDayOfMonth;
 
-// Scaling data
-public float scalarX;
-public float scalarY;
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -34,7 +22,7 @@ public void setup() {
   surface.setResizable(true);
   frameRate(144);
   background(244);
-  calendar = new Calendar();
+  calendar = new Calendar(month);
 }
 
 // ----------------------------------------------------------------------------------------------------------------

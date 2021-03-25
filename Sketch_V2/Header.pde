@@ -1,17 +1,30 @@
 import java.util.*;
 import java.time.*;
-import java.time.format.TextStyle;
 
 public class Header {
 
-  private final PFont FONT = createFont("Georgia", 64);
-  private final int TILE_STROKE_WEIGHT = 5;
-  private Month month;
-  private DayOfWeek dayOfWeek;
-	private int monthNumber;
+    private Month month;
+    private DayOfWeek sunday = DayOfWeek.SUNDAY;
 
-  public Header (Month month) {
-    this.month = month;
-  }
+    public Header (Month month) {
+        setMonth(month);
+    }
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
+//  ****************** Getters ******************
+// ----------------------------------------------------------------------------------------------------------------
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
+//  ****************** Setters ******************
+// ----------------------------------------------------------------------------------------------------------------
+
+    private void setMonth(Month month) {
+        this.month = month;
+    }
+
 
 }// Header
