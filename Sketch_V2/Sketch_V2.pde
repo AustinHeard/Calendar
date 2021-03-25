@@ -29,10 +29,6 @@ public void setup() {
 //  draw - runs after setup and until the program is closed 
 // ----------------------------------------------------------------------------------------------------------------
 public void draw() {
-  showTileArr();
-  header.show();
-
-
   calendar.show();
   calendar.setTileSize();
 }

@@ -9,7 +9,7 @@ public class Tile {
     private int arrY;
     private int tileNumber;
 
-    public Tile (int x, int y, DayOfWeek dayOfWeek) {
+    public Tile (int x, int y, DayOfWeek dayOfWeek, int firstDayOfMonth) {
         // x y position in array
         arrX = x;
         arrY = y;
@@ -19,17 +19,20 @@ public class Tile {
 
 
         setTileNumber();
-        setDate();
+        setDate(firstDayOfMonth);
     }
 
     private void setTileNumber() {
         this.tileNumber = getX() + getY()*7; 
     }
 
-    private void setDate() {
+    private void setDate(int firstDayOfMonth) {
         this.date = getTileNumber() - firstDayOfMonth + 1;
     }
 
+    public int getDate() {
+        return this.date;
+    }
 
 
     public int getTileNumber() {
@@ -37,11 +40,11 @@ public class Tile {
     }
 
     public int getX() {
-        return x;
+        return arrX;
     }
     
     public int getY() {
-        return y;
+        return arrY;
     }
 
 }// Tile

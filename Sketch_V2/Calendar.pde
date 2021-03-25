@@ -1,4 +1,6 @@
+import java.util.*;
 import java.time.*;
+import java.time.format.TextStyle;
 public class Calendar {
 
     private final PFont FONT = createFont("Georgia", 64);
@@ -41,8 +43,8 @@ public class Calendar {
 
     public void show() {
         setTileSize();
-        showHeader();
-        showTileArr(x, y);
+        showHeader(header);
+        showTileArr();
     }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -56,7 +58,7 @@ public class Calendar {
     public void createTiles() {
         for (int y = 0; y < tileArr.length; ++y)
             for (int x = 0; x < tileArr[y].length; ++x)
-                tileArr[y][x] = new Tile(x,y,dayOfWeek.SUNDAY.plus(x));
+                tileArr[y][x] = new Tile(x,y,dayOfWeek.SUNDAY.plus(x),firstDayOfMonth);
     }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -64,7 +66,7 @@ public class Calendar {
 // ----------------------------------------------------------------------------------------------------------------
 
     // Show Tiles ---------------------------------
-    public void showTileArr(int x, int y) {
+    public void showTileArr() {
         for (int y = 0; y < TILE_ARR_HEIGHT; ++y) {
             for (int x = 0; x < TILE_ARR_LENGTH; ++x) {
                 drawTile(tileArr[y][x]);
@@ -88,7 +90,7 @@ public class Calendar {
         if (firstDayOfMonth > tile.getTileNumber() || header.getMonth().length(localDate.isLeapYear()) < tile.getDate()) {
         text("",setTileOffset("x", tile), setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y);
         } else {
-        text(String.valueOf(getDate()),setTileOffset("x", tile) - TILE_STROKE_WEIGHT, setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y);
+        text(String.valueOf(tile.getDate()),setTileOffset("x", tile) - TILE_STROKE_WEIGHT, setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y);
         }
     }
 
@@ -97,9 +99,9 @@ public class Calendar {
     }
     
     private void setCornerRoundness(Tile tile){
-        if (getX() == 6 && getY() == 5)
+        if (tile.getX() == 6 && tile.getY() == 5)
             rect(setTileOffset("x", tile), setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y,0,0,10,0);
-        else if (getX() == 0 && getY() == 5)
+        else if (tile.getX() == 0 && tile.getY() == 5)
             rect(setTileOffset("x", tile), setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y,0,0,0,10);
         else
             rect(setTileOffset("x", tile), setTileOffset("y", tile), TILE_SIZE_X, TILE_SIZE_Y);
