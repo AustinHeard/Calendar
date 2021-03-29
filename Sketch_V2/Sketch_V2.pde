@@ -6,8 +6,9 @@ import java.time.*;
 
 public Calendar calendar;
 
-// Month of The Calendar
+// Month/Year of The Calendar
 public Month month = Month.APRIL;
+public int year = 2020;
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -16,10 +17,11 @@ public Month month = Month.APRIL;
 
 public void setup() {
   size(1000, 1000);
+  surface.setTitle("Calendar");
   surface.setResizable(true);
   frameRate(144);
   background(244);
-  calendar = new Calendar(month);
+  calendar = new Calendar(month, year);
 }
 
 public void draw() {
