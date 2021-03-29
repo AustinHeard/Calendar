@@ -30,20 +30,25 @@ public class Sketch_V2 extends PApplet {
 
 public Calendar calendar;
 
-// Month of The Calendar
+// Month/Year of The Calendar
 public Month month = Month.APRIL;
+public int year = Year.now().getValue();
 
 
 // ----------------------------------------------------------------------------------------------------------------
 //  ****************** Setup && Draw ******************
 // ----------------------------------------------------------------------------------------------------------------
 
+public void settings() {
+  size(1000, 1000);
+}
+
 public void setup() {
-  
+  surface.setTitle("Calendar");
   surface.setResizable(true);
   frameRate(144);
   background(244);
-  calendar = new Calendar(month);
+  calendar = new Calendar(month, year);
 }
 
 public void draw() {
@@ -75,6 +80,7 @@ public class Calendar {
     // calendar data
     private LocalDate localDate;
     private Month month;
+    private int year;
     private DayOfWeek dayOfWeek;
     private int firstDayOfMonth;
 
@@ -83,10 +89,11 @@ public class Calendar {
     private float scalarY;
 
 
-    public Calendar(Month month) {
+    public Calendar(Month month, int year) {
         setTileSize();
 
         setMonth(month);
+        setYear(year);
         setLocalDate();
         setFirstDayOfMonth();
 
@@ -134,29 +141,32 @@ public class Calendar {
         fill(244);
         drawOutline(tile);
     }
-
-    public void drawDate(Tile tile) {
-        textFont(FONT, DATE_FONT_SIZE);
-        fill(0);
-        textAlign(RIGHT,TOP);
-        
-        float tileOffsetY = setTileOffset("y", tile);
-        float tileOffsetX = setTileOffset("x", tile);
-
-        if (firstDayOfMonth > tile.getTileNumber() || header.getMonth().length(localDate.isLeapYear()) < tile.getDate()) {
-        text("",tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
-        } else {
-        text(String.valueOf(tile.getDate()),tileOffsetX - TILE_STROKE_WEIGHT, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
-        }
-    }
     
     private void drawOutline(Tile tile){
+        float tileOffsetX = setTileOffset("x", tile) + TILE_SIZE_X;
+        float tileOffsetY = setTileOffset("y", tile) + TILE_SIZE_Y;
+
         if (tile.getX() == 6 && tile.getY() == 5)
             rect(tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y,0,0,10,0);
         else if (tile.getX() == 0 && tile.getY() == 5)
             rect(tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y,0,0,0,10);
         else
             rect(tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
+    }
+
+    public void drawDate(Tile tile) {
+        textFont(FONT, DATE_FONT_SIZE);
+        fill(0);
+        textAlign(RIGHT,TOP);
+        
+        float tileOffsetX = setTileOffset("x", tile) + TILE_SIZE_X;
+        float tileOffsetY = setTileOffset("y", tile) + TILE_SIZE_Y;
+
+        if (firstDayOfMonth > tile.getTileNumber() || header.getMonth().length(localDate.isLeapYear()) < tile.getDate()) {
+        text("",tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
+        } else {
+        text(String.valueOf(tile.getDate()),tileOffsetX - TILE_STROKE_WEIGHT, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
+        }
     }
 
     public float setTileOffset(String str, Tile tile) {
@@ -174,7 +184,7 @@ public class Calendar {
         stroke(152);
         strokeWeight(TILE_STROKE_WEIGHT);
         fill(244);
-        rect(0, 0, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y,10,10,0,0);
+        rect(TILE_SIZE_X, TILE_SIZE_Y, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y,10,10,0,0);
     }
 
     private void drawMonth_NameofDays(Header header) {
@@ -182,7 +192,7 @@ public class Calendar {
         textFont(FONT, 50);
         fill(0);
         textAlign(CENTER,TOP);
-        text(header.getMonth().getDisplayName(TextStyle.FULL,Locale.ENGLISH),0, 0, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y);
+        text(header.getMonth().getDisplayName(TextStyle.FULL,Locale.ENGLISH),TILE_SIZE_X, TILE_SIZE_Y, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y);
 
         // Draw Names of Days of Week
         textFont(FONT, 15);
@@ -190,13 +200,13 @@ public class Calendar {
         textAlign(CENTER,CENTER);
 
         for(int i = 0; i < dayOfWeek.values().length;i++){
-            text(header.getSunday().plus(i).getDisplayName(TextStyle.FULL,Locale.ENGLISH),i*TILE_SIZE_X, TILE_SIZE_Y * .75f, TILE_SIZE_X, TILE_SIZE_Y*.25f);
+            text(DayOfWeek.SUNDAY.plus(i).getDisplayName(TextStyle.FULL,Locale.ENGLISH),i*TILE_SIZE_X + TILE_SIZE_X, TILE_SIZE_Y * .75f + TILE_SIZE_Y, TILE_SIZE_X, TILE_SIZE_Y*.25f);
 
 
             stroke(152);
             strokeWeight(TILE_STROKE_WEIGHT);
             noFill();
-            rect(i*TILE_SIZE_X, TILE_SIZE_Y * .75f, TILE_SIZE_X, TILE_SIZE_Y*.25f);
+            rect(i*TILE_SIZE_X + TILE_SIZE_X, TILE_SIZE_Y * .75f + TILE_SIZE_Y, TILE_SIZE_X, TILE_SIZE_Y*.25f);
         }
     }
 
@@ -213,10 +223,14 @@ public class Calendar {
     private void setMonth(Month month) {
         this.month = month;
     }
+    
+    private void setYear(int year) {
+        this.year = year;
+    }
 
     public void setLocalDate(){
     //                          (year , month, day of month)
-        localDate = localDate.of(2021 , month,      1      );
+        localDate = localDate.of(year , month,      1      );
     }
 
     public void setFirstDayOfMonth(){
@@ -228,16 +242,16 @@ public class Calendar {
 // ----------------------------------------------------------------------------------------------------------------
 
     public void setTileSize(){
-        TILE_SIZE_X = setScalarX();
-        TILE_SIZE_Y = setScalarY();
+        setScalarX();
+        setScalarY();
     }
 
-    public float setScalarX(){
-        return scalarX = width * .1f;
+    public void setScalarX(){
+        TILE_SIZE_X = width * .11f;
     }
     
-    public float setScalarY(){
-        return scalarY = height * .1f;
+    public void setScalarY(){
+        TILE_SIZE_Y = height * .11f;
     }
 
 }// Calendar
@@ -247,21 +261,14 @@ public class Calendar {
 public class Header {
 
     private Month month;
-    private DayOfWeek sunday = DayOfWeek.SUNDAY;
 
     public Header (Month month) {
         setMonth(month);
     }
 
-
-
 // ----------------------------------------------------------------------------------------------------------------
 //  ****************** Getters ******************
 // ----------------------------------------------------------------------------------------------------------------
-
-    public DayOfWeek getSunday() {
-        return sunday;
-    }
 
     public Month getMonth() {
         return month;
@@ -327,7 +334,6 @@ public class Tile {
     }
 
 }// Tile
-  public void settings() {  size(1000, 1000); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Sketch_V2" };
     if (passedArgs != null) {
