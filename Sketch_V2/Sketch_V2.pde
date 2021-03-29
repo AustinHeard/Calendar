@@ -8,7 +8,7 @@ public Calendar calendar;
 
 // Month/Year of The Calendar
 public Month month = Month.APRIL;
-public int year = 2020;
+public int year = Year.now().getValue();
 
 
 // ----------------------------------------------------------------------------------------------------------------
