@@ -23,6 +23,7 @@ public class Calendar {
     // calendar data
     private LocalDate localDate;
     private Month month;
+    private int year;
     private DayOfWeek dayOfWeek;
     private int firstDayOfMonth;
 
@@ -31,10 +32,11 @@ public class Calendar {
     private float scalarY;
 
 
-    public Calendar(Month month) {
+    public Calendar(Month month, int year) {
         setTileSize();
 
         setMonth(month);
+        setYear(year);
         setLocalDate();
         setFirstDayOfMonth();
 
@@ -84,6 +86,9 @@ public class Calendar {
     }
     
     private void drawOutline(Tile tile){
+        float tileOffsetX = setTileOffset("x", tile) + TILE_SIZE_X;
+        float tileOffsetY = setTileOffset("y", tile) + TILE_SIZE_Y;
+
         if (tile.getX() == 6 && tile.getY() == 5)
             rect(tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y,0,0,10,0);
         else if (tile.getX() == 0 && tile.getY() == 5)
@@ -97,8 +102,8 @@ public class Calendar {
         fill(0);
         textAlign(RIGHT,TOP);
         
-        float tileOffsetY = setTileOffset("y", tile);
-        float tileOffsetX = setTileOffset("x", tile);
+        float tileOffsetX = setTileOffset("x", tile) + TILE_SIZE_X;
+        float tileOffsetY = setTileOffset("y", tile) + TILE_SIZE_Y;
 
         if (firstDayOfMonth > tile.getTileNumber() || header.getMonth().length(localDate.isLeapYear()) < tile.getDate()) {
         text("",tileOffsetX, tileOffsetY, TILE_SIZE_X, TILE_SIZE_Y);
@@ -122,7 +127,7 @@ public class Calendar {
         stroke(152);
         strokeWeight(TILE_STROKE_WEIGHT);
         fill(244);
-        rect(0, 0, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y,10,10,0,0);
+        rect(TILE_SIZE_X, TILE_SIZE_Y, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y,10,10,0,0);
     }
 
     private void drawMonth_NameofDays(Header header) {
@@ -130,7 +135,7 @@ public class Calendar {
         textFont(FONT, 50);
         fill(0);
         textAlign(CENTER,TOP);
-        text(header.getMonth().getDisplayName(TextStyle.FULL,Locale.ENGLISH),0, 0, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y);
+        text(header.getMonth().getDisplayName(TextStyle.FULL,Locale.ENGLISH),TILE_SIZE_X, TILE_SIZE_Y, TILE_SIZE_X*TILE_ARR_LENGTH, TILE_SIZE_Y);
 
         // Draw Names of Days of Week
         textFont(FONT, 15);
@@ -138,13 +143,13 @@ public class Calendar {
         textAlign(CENTER,CENTER);
 
         for(int i = 0; i < dayOfWeek.values().length;i++){
-            text(header.getSunday().plus(i).getDisplayName(TextStyle.FULL,Locale.ENGLISH),i*TILE_SIZE_X, TILE_SIZE_Y * .75, TILE_SIZE_X, TILE_SIZE_Y*.25);
+            text(DayOfWeek.SUNDAY.plus(i).getDisplayName(TextStyle.FULL,Locale.ENGLISH),i*TILE_SIZE_X + TILE_SIZE_X, TILE_SIZE_Y * .75 + TILE_SIZE_Y, TILE_SIZE_X, TILE_SIZE_Y*.25);
 
 
             stroke(152);
             strokeWeight(TILE_STROKE_WEIGHT);
             noFill();
-            rect(i*TILE_SIZE_X, TILE_SIZE_Y * .75, TILE_SIZE_X, TILE_SIZE_Y*.25);
+            rect(i*TILE_SIZE_X + TILE_SIZE_X, TILE_SIZE_Y * .75 + TILE_SIZE_Y, TILE_SIZE_X, TILE_SIZE_Y*.25);
         }
     }
 
@@ -161,10 +166,14 @@ public class Calendar {
     private void setMonth(Month month) {
         this.month = month;
     }
+    
+    private void setYear(int year) {
+        this.year = year;
+    }
 
     public void setLocalDate(){
     //                          (year , month, day of month)
-        localDate = localDate.of(2021 , month,      1      );
+        localDate = localDate.of(year , month,      1      );
     }
 
     public void setFirstDayOfMonth(){
@@ -176,16 +185,16 @@ public class Calendar {
 // ----------------------------------------------------------------------------------------------------------------
 
     public void setTileSize(){
-        TILE_SIZE_X = setScalarX();
-        TILE_SIZE_Y = setScalarY();
+        setScalarX();
+        setScalarY();
     }
 
-    public float setScalarX(){
-        return scalarX = width * .1;
+    public void setScalarX(){
+        TILE_SIZE_X = width * .11;
     }
     
-    public float setScalarY(){
-        return scalarY = height * .1;
+    public void setScalarY(){
+        TILE_SIZE_Y = height * .11;
     }
 
 }// Calendar
